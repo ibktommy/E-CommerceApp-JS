@@ -4,8 +4,6 @@ const express = require('express')
 // A Global Middleware Function that runs before we make request
 const bodyParser = require('body-parser')
 
-const res = require('express/lib/response')
-
 // Creating App Object that Contains all the things the web server can do
 const app = express()
 
