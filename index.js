@@ -7,7 +7,16 @@ const app = express()
 
 // Route Handler - Letting the Web Server know what to do when it receives a Network Request from the Browser
 app.get('/', (req, res) => {
-  res.send('Hi there! from your local Web Server :)')
+  res.send(`
+    <div>
+      <form>
+        <input type="email" placeholder="Email"/>
+        <input type="passwod" placeholder="Pasword"/>
+        <input type="password" placeholder="Confirm Password"/>
+        <button>Sign Up</button>
+      </form>
+    </div>
+  `)
 })
 
 // Let App Listen for incoming Network Request from the browser
