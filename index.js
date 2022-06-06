@@ -19,19 +19,29 @@ app.get('/', (req, res) => {
   `)
 })
 
+// Creating A Middleware Function that runs before we make request
+const bodyParser = (req, res, next) => {
+  if (req.method === 'POST') {
+    req.on('data', data => {
+      // console.log(data.toString('utf8'))
+      const parsed = data.toString('utf8').split('&')
+      const formData = {}
+      // For Loop to iterate over "Parsed Array"
+      for (let pair of parsed) {
+        const [key, value] = pair.split('=')
+        formData[key] = value;
+      }
+      req.body = formData
+      next()  // Next function indicates Express can proceed with its request
+    })
+  } else {
+    next()
+  }
+}
+
 // Creating A Post request for the Web Server
-app.post('/', (req, res) => {
-  req.on('data', data => {
-    // console.log(data.toString('utf8'))
-    const parsed = data.toString('utf8').split('&')
-    const formData = {}
-    // For Loop to iterate over "Parsed Array"
-    for (let pair of parsed) {
-      const [key, value] = pair.split('=')
-      formData[key] = value;
-    }
-    console.log(formData)
-  })
+app.post('/', bodyParser, (req, res) => {
+  console.log(req.body)
   res.send('Account Created!')
 })
 
