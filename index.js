@@ -1,5 +1,9 @@
 // Require Express Library
 const express = require('express')
+
+// A Global Middleware Function that runs before we make request
+const bodyParser = require('body-parser')
+
 const res = require('express/lib/response')
 
 // Creating App Object that Contains all the things the web server can do
@@ -19,28 +23,8 @@ app.get('/', (req, res) => {
   `)
 })
 
-// Creating A Middleware Function that runs before we make request
-const bodyParser = (req, res, next) => {
-  if (req.method === 'POST') {
-    req.on('data', data => {
-      // console.log(data.toString('utf8'))
-      const parsed = data.toString('utf8').split('&')
-      const formData = {}
-      // For Loop to iterate over "Parsed Array"
-      for (let pair of parsed) {
-        const [key, value] = pair.split('=')
-        formData[key] = value;
-      }
-      req.body = formData
-      next()  // Next function indicates Express can proceed with its request
-    })
-  } else {
-    next()
-  }
-}
-
 // Creating A Post request for the Web Server
-app.post('/', bodyParser, (req, res) => {
+app.post('/', bodyParser.urlencoded({ extended: true }), (req, res) => {
   console.log(req.body)
   res.send('Account Created!')
 })
