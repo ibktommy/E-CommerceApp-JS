@@ -7,6 +7,9 @@ const bodyParser = require('body-parser')
 // Creating App Object that Contains all the things the web server can do
 const app = express()
 
+// Automatically calling the bodyParser Middleware function in every single Route Handlers
+app.use(bodyParser.urlencoded({ extended: true }))
+
 // Route Handler - Letting the Web Server know what to do when it receives a Network Request from the Browser
 app.get('/', (req, res) => {
   res.send(`
@@ -22,7 +25,7 @@ app.get('/', (req, res) => {
 })
 
 // Creating A Post request for the Web Server
-app.post('/', bodyParser.urlencoded({ extended: true }), (req, res) => {
+app.post('/',  (req, res) => {
   console.log(req.body)
   res.send('Account Created!')
 })
