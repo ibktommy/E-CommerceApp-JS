@@ -18,7 +18,22 @@ class UsersRepository {
 
   }
 
+  // Accessing the Repository Data File
+  async getAll() {
+    // Open the file - "this.filename"
+    const contents = await fs.promises.readFile(this.filename, { encoding: 'utf8' })
+
+    // Read the File Contents
+    console.log(contents)
+  }
+
 }
 
 // Creating an Instance of User Repository
-const repo = new UsersRepository('users.json')
+const test = async () => {
+  const repo = new UsersRepository('users.json')
+
+  await repo.getAll()
+}
+
+test()
