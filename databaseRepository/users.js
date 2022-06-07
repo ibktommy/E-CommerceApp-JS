@@ -1,3 +1,5 @@
+// Requiring File System module
+const fs = require('fs')
 // Creating a single class that will be responsible for data access
 class UsersRepository {
   constructor(filename) {
@@ -5,9 +7,18 @@ class UsersRepository {
     if (!filename) {
       throw new Error('Creating A Repository ')
     }
+
+    this.filename = filename
+    try {
+      fs.accessSync(this.filename)
+    } catch (error) {
+      // If file doesnt exist, create file
+      fs.writeFileSync(this.filename, '[]')
+    }
+
   }
 
 }
 
-// calling an Instance of User Repository
-new UsersRepository()
+// Creating an Instance of User Repository
+const repo = new UsersRepository('users.json')
