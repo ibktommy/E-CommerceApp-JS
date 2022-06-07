@@ -18,6 +18,7 @@ class UsersRepository {
 
   }
 
+  // METHOD TO GET CONTENT OF USER-DATA JSON FILE
   // Accessing the Repository Data File and Returning it
   async getAll() {
     return JSON.parse(await fs.promises.readFile(this.filename, {
@@ -25,11 +26,25 @@ class UsersRepository {
     }))
   }
 
+  // METHOD TO ADD CONTENT IN THE USER-DAT JSON FILE
+  async create(attributes) {
+    // Get existing list of users of in user-data file
+    const records = await this.getAll()
+
+    // Push/Append "atrributes" to the end of Records Array
+    records.push(attributes)
+
+    // Write the Updated 'records' array back to this.filename
+    await fs.promises.writeFile(this.filename, JSON.stringify(records))
+  }
+
 }
 
 // Creating an Instance of User Repository
 const test = async () => {
   const repo = new UsersRepository('users.json')
+
+  await repo.create({ email: 'roy@roy.com', password: 'Goodness' })
 
   const users = await repo.getAll()
   console.log(users)
