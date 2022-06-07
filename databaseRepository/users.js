@@ -53,16 +53,21 @@ class UsersRepository {
     return crypto.randomBytes(4).toString('hex')
   }
 
+  // METHOD TO GET ONE ID FROM USER-DATA FILE
+  async getOne(id) {
+    const records = await this.getAll()
+    return records.find(record => record.id === id)
+  }
+
 }
 
 // Creating an Instance of User Repository
 const test = async () => {
   const repo = new UsersRepository('users.json')
 
-  await repo.create({ email: 'roy@roy.com', password: 'Goodness' })
+  const user = await repo.getOne('db890846')
 
-  const users = await repo.getAll()
-  console.log(users)
+  console.log(user)
 }
 
 test()
