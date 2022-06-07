@@ -35,6 +35,11 @@ class UsersRepository {
     records.push(attributes)
 
     // Write the Updated 'records' array back to this.filename
+    await this.writeAll(records)
+  }
+
+  // METHOD TO WRITE CONTENT INTO THE USER-DATA FILE
+  async writeAll(records) {
     await fs.promises.writeFile(this.filename, JSON.stringify(records))
   }
 
