@@ -59,15 +59,20 @@ class UsersRepository {
     return records.find(record => record.id === id)
   }
 
+  // METHOD TO DELETE A SPECIFIED USER BASED ON THE ID
+  async delete(id) {
+    const records = await this.getAll()
+    const filteredRecords = records.filter(record => record.id !== id)
+    this.writeAll(filteredRecords)
+  }
+
 }
 
 // Creating an Instance of User Repository
 const test = async () => {
   const repo = new UsersRepository('users.json')
 
-  const user = await repo.getOne('db890846')
-
-  console.log(user)
+  await repo.delete('7ffedb5c')
 }
 
 test()
