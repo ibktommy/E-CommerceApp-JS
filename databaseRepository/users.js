@@ -1,5 +1,8 @@
 // Requiring File System module
 const fs = require('fs')
+
+// Requiring Crypto Library
+const crypto = require('crypto')
 // Creating a single class that will be responsible for data access
 class UsersRepository {
   constructor(filename) {
@@ -26,8 +29,10 @@ class UsersRepository {
     }))
   }
 
-  // METHOD TO ADD CONTENT IN THE USER-DAT JSON FILE
+  // METHOD TO ADD CONTENT IN THE USER-DATA JSON FILE
   async create(attributes) {
+    // Adding a Random ID to each content created
+    attributes.id = this.randomID()
     // Get existing list of users of in user-data file
     const records = await this.getAll()
 
@@ -41,6 +46,11 @@ class UsersRepository {
   // METHOD TO WRITE CONTENT INTO THE USER-DATA FILE
   async writeAll(records) {
     await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2))
+  }
+
+  // METHOD TO CREATE A RANDOM ID
+  randomID() {
+    return crypto.randomBytes(4).toString('hex')
   }
 
 }
