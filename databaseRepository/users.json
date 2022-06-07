@@ -1,1 +1,22 @@
-[{"email":"roy@roy.com","password":"Goodness"},{"email":"roy@roy.com","password":"Goodness"},{"email":"roy@roy.com","password":"Goodness"},{"email":"roy@roy.com","password":"Goodness"}]
+[
+  {
+    "email": "roy@roy.com",
+    "password": "Goodness"
+  },
+  {
+    "email": "roy@roy.com",
+    "password": "Goodness"
+  },
+  {
+    "email": "roy@roy.com",
+    "password": "Goodness"
+  },
+  {
+    "email": "roy@roy.com",
+    "password": "Goodness"
+  },
+  {
+    "email": "roy@roy.com",
+    "password": "Goodness"
+  }
+]

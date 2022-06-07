@@ -40,7 +40,7 @@ class UsersRepository {
 
   // METHOD TO WRITE CONTENT INTO THE USER-DATA FILE
   async writeAll(records) {
-    await fs.promises.writeFile(this.filename, JSON.stringify(records))
+    await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2))
   }
 
 }
