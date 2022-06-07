@@ -23,8 +23,11 @@ class UsersRepository {
     // Open the file - "this.filename"
     const contents = await fs.promises.readFile(this.filename, { encoding: 'utf8' })
 
-    // Read the File Contents
-    console.log(contents)
+    // Parsing File Contents
+    const data = JSON.parse(contents)
+
+    // Return the Parsed Data
+    return data
   }
 
 }
@@ -33,7 +36,8 @@ class UsersRepository {
 const test = async () => {
   const repo = new UsersRepository('users.json')
 
-  await repo.getAll()
+  const users = await repo.getAll()
+  console.log(users)
 }
 
 test()
