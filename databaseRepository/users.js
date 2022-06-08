@@ -82,13 +82,33 @@ class UsersRepository {
     await this.writeAll(records)
   }
 
+  // METHOD TO GET A USER-DATA BASED ON THE KEY-VALUE CONTENT
+  async getOneByKeyValueContent (keyValueContent) {
+    const records = await this.getAll()
+
+    for (let record of records) {
+      let found = true
+
+      for (let key in keyValueContent) {
+        if(record[key] !== keyValueContent[key]) {
+          found = false
+        }
+      }
+
+      if (found) {
+        return record;
+      }
+    }
+  }
+
 }
 
 // Creating an Instance of User Repository
 const test = async () => {
   const repo = new UsersRepository('users.json')
 
-  await repo.update('67f938e6', { password: "Goodness" })
+  const user = await repo.getOneByKeyValueContent({ email: 'roy@boy.com' })
+  console.log(user)
 }
 
 test()
