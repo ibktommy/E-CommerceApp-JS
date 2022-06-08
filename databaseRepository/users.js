@@ -83,14 +83,14 @@ class UsersRepository {
   }
 
   // METHOD TO GET A USER-DATA BASED ON THE KEY-VALUE CONTENT
-  async getOneByKeyValueContent (keyValueContent) {
+  async getOneByKeyValueContent(keyValueContent) {
     const records = await this.getAll()
 
     for (let record of records) {
       let found = true
 
       for (let key in keyValueContent) {
-        if(record[key] !== keyValueContent[key]) {
+        if (record[key] !== keyValueContent[key]) {
           found = false
         }
       }

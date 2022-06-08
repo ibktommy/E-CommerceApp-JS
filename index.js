@@ -4,6 +4,9 @@ const express = require('express')
 // A Global Middleware Function that runs before we make request
 const bodyParser = require('body-parser')
 
+// Require the UsersRepository Class
+const usersRepo = require('./databaseRepository/users')
+
 // Creating App Object that Contains all the things the web server can do
 const app = express()
 
@@ -25,12 +28,20 @@ app.get('/', (req, res) => {
 })
 
 // Creating A Post request for the Web Server
-app.post('/',  (req, res) => {
-  console.log(req.body)
+app.post('/',  async (req, res) => {
+  const { email, password, confirmPassword } = req.body
+
+  // Validating user email - if it exist already
+  const existingUser = await usersRepo.getOneByKeyValueContent({ email })
+
+  if (existingUser) {
+    return res.send('This Email has been used by another User, register with another email')
+  }
+
   res.send('Account Created!')
 })
 
-// Let App Listen for incoming Network Request from the browser
+// Let App Listen for Incoming Network Request from the browser
 app.listen(5000, () => {
   console.log('App is Listening for Request')
 })
