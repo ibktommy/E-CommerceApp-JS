@@ -103,12 +103,5 @@ class UsersRepository {
 
 }
 
-// Creating an Instance of User Repository
-const test = async () => {
-  const repo = new UsersRepository('users.json')
-
-  const user = await repo.getOneByKeyValueContent({ email: 'roy@boy.com' })
-  console.log(user)
-}
-
-test()
+// Exporting an Instance of the class UsersRepository
+module.exports = new UsersRepository('users.json')
