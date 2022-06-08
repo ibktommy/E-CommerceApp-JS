@@ -34,8 +34,14 @@ app.post('/',  async (req, res) => {
   // Validating user email - if it exist already
   const existingUser = await usersRepo.getOneByKeyValueContent({ email })
 
+  // Condition to check if email already exist in the Users Database
   if (existingUser) {
     return res.send('This Email has been used by another User, register with another email')
+  }
+
+  // Condition to check if user password is inputted correctly
+  if (password !== confirmPassword) {
+    return res.send('Passwords Do not Match!')
   }
 
   res.send('Account Created!')
