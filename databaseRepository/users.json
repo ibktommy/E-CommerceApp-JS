@@ -1,12 +1,8 @@
 [
   {
+    "username": "roy",
     "email": "roy@roy.com",
-    "password": "Goodness",
-    "id": "f4e01982"
-  },
-  {
-    "email": "roy@roy.com",
-    "password": "Goodness",
-    "id": "db890846"
+    "id": "67f938e6",
+    "password": "Goodness"
   }
 ]

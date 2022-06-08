@@ -3,6 +3,7 @@ const fs = require('fs')
 
 // Requiring Crypto Library
 const crypto = require('crypto')
+const { create } = require('domain')
 // Creating a single class that will be responsible for data access
 class UsersRepository {
   constructor(filename) {
@@ -66,13 +67,28 @@ class UsersRepository {
     this.writeAll(filteredRecords)
   }
 
+  // METHOD TO UPDATE THE CONTENTS OF A SPECIFIED USER BASED ON ID
+  async update(id, attributes) {
+    const records = await this.getAll()
+    const record = records.find(record => record.id === id)
+
+    // Condition to check if the selected ID-record is available
+    if (!record) {
+      throw new Error(`Record with the id ${id} does not exist`)
+    }
+
+    // Upadte the record selected content
+    Object.assign(record, attributes)
+    await this.writeAll(records)
+  }
+
 }
 
 // Creating an Instance of User Repository
 const test = async () => {
   const repo = new UsersRepository('users.json')
 
-  await repo.delete('7ffedb5c')
+  await repo.update('67f938e6', { password: "Goodness" })
 }
 
 test()
