@@ -4,6 +4,9 @@ const express = require('express')
 // A Global Middleware Function that runs before we make request
 const bodyParser = require('body-parser')
 
+// Require Cookie-Session Library - Also A Middleware
+const cookiesSession = require('cookie-session')
+
 // Require the UsersRepository Class
 const usersRepo = require('./databaseRepository/users')
 
@@ -12,6 +15,10 @@ const app = express()
 
 // Automatically calling the bodyParser Middleware function in every single Route Handlers
 app.use(bodyParser.urlencoded({ extended: true }))
+// Automatically calling the Cookie-Session Middleware function in every single Route Handlers
+app.use(cookiesSession({
+  keys: ['dg34uigfhf8rydh32']
+}))
 
 // Route Handler - Letting the Web Server know what to do when it receives a Network Request from the Browser
 app.get('/', (req, res) => {
