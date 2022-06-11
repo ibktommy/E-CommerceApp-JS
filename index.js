@@ -24,6 +24,7 @@ app.use(cookiesSession({
 app.get('/', (req, res) => {
   res.send(`
     <div>
+      Your User ID is: ${req.session.userID}
       <form method="POST">
         <input name="email" type="email" placeholder="Email"/>
         <input name="password" type="password" placeholder="Password"/>
@@ -35,7 +36,7 @@ app.get('/', (req, res) => {
 })
 
 // Creating A Post request for the Web Server
-app.post('/',  async (req, res) => {
+app.post('/', async (req, res) => {
   const { email, password, confirmPassword } = req.body
 
   // Validating user email - if it exist already
@@ -54,7 +55,8 @@ app.post('/',  async (req, res) => {
   // Create A User in the User_Repo to represent a valid User
   const user = await usersRepo.create({ email, password })
 
-  
+  // Store the ID of the validated user inside the users cookies
+  req.session.userID = user.id  //Added by cookie-session
 
   res.send('Account Created!')
 })
