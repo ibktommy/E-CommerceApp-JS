@@ -29,7 +29,7 @@ app.get('/register', (req, res) => {
         <input name="email" type="email" placeholder="Email"/>
         <input name="password" type="password" placeholder="Password"/>
         <input name="confirmPassword" type="password" placeholder="Confirm Password"/>
-        <button>Sign Up</button>
+        <button>Register An Account</button>
       </form>
     </div>
   `)
@@ -61,8 +61,21 @@ app.post('/register', async (req, res) => {
   res.send('Account Created!')
 })
 
+// Logging In User
+app.get('/login', (req, res) => {
+  res.send(`
+    <div>
+      <form method="POST">
+        <input name="email" type="email" placeholder="Email"/>
+        <input name="password" type="password" placeholder="Password"/>
+        <button>Login</button>
+      </form>
+    </div>
+  `)
+})
+
 // Logging Out the User
-app.get('/logout', async(req, res) => {
+app.get('/logout', async (req, res) => {
   req.session = null
   res.send('You have been logged Out!')
 })
