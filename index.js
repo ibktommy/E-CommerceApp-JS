@@ -36,6 +36,7 @@ app.get('/register', (req, res) => {
 })
 
 // Creating A Post request for the Web Server
+// Post Request Handler When User Registers An Account
 app.post('/register', async (req, res) => {
   const { email, password, confirmPassword } = req.body
 
@@ -72,6 +73,28 @@ app.get('/login', (req, res) => {
       </form>
     </div>
   `)
+})
+// Post Request Handler when User Logins to Account
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body
+
+  // Getting A User Based on the email passed
+  const user = await usersRepo.getOneByKeyValueContent({ email })
+
+  // Condition to check if email already exist in the Users Database
+  if (!user) {
+    return res.send('Email Not Found!')
+  }
+
+  // Condition to check if user password is Valid
+  if (user.password !== password) {
+    return res.send('Password Is Invalid!')
+  }
+
+  // Store the ID of the validated user inside the users cookies
+  req.session.userID = user.id  //Added by cookie-session
+
+  res.send('You Have Succesfully Logged In')
 })
 
 // Logging Out the User
