@@ -45,19 +45,23 @@ class UsersRepository {
     const salt = crypto.randomBytes(8).toString('hex')
 
     // Using crypto-scrypt to hash the user password
-    const hashed = await scrypt(attributes.password, salt, 64)
+    const buffer = await scrypt(attributes.password, salt, 64)
 
     // Get existing list of users of in user-data file
     const records = await this.getAll()
 
     // Push/Append "atrributes" to the end of Records Array
-    records.push(attributes)
+    const record = {
+      ...attributes, password: `${buffer.toString('hex')}.${salt}`
+
+    }
+    records.push(record)
 
     // Write the Updated 'records' array back to this.filename
     await this.writeAll(records)
 
     // Return the Atrributes Object created
-    return attributes
+    return record
   }
 
   // METHOD TO WRITE CONTENT INTO THE USER-DATA FILE
