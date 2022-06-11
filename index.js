@@ -34,7 +34,6 @@ app.get('/register', (req, res) => {
     </div>
   `)
 })
-
 // Creating A Post request for the Web Server
 // Post Request Handler When User Registers An Account
 app.post('/register', async (req, res) => {

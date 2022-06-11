@@ -3,7 +3,7 @@ const fs = require('fs')
 
 // Requiring Crypto Library
 const crypto = require('crypto')
-const { create } = require('domain')
+
 // Creating a single class that will be responsible for data access
 class UsersRepository {
   constructor(filename) {
@@ -31,9 +31,14 @@ class UsersRepository {
   }
 
   // METHOD TO ADD CONTENT IN THE USER-DATA JSON FILE
-  async create(attributes) {
+  async create(attributes) { 
     // Adding a Random ID to each content created
     attributes.id = this.randomID()
+
+    // Creating Random Salt keys
+    const salt = crypto.randomBytes(8).toString('hex')
+
+    
     // Get existing list of users of in user-data file
     const records = await this.getAll()
 
