@@ -21,7 +21,7 @@ app.use(cookiesSession({
 }))
 
 // Route Handler - Letting the Web Server know what to do when it receives a Network Request from the Browser
-app.get('/', (req, res) => {
+app.get('/register', (req, res) => {
   res.send(`
     <div>
       Your User ID is: ${req.session.userID}
@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 })
 
 // Creating A Post request for the Web Server
-app.post('/', async (req, res) => {
+app.post('/register', async (req, res) => {
   const { email, password, confirmPassword } = req.body
 
   // Validating user email - if it exist already
