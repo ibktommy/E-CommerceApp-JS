@@ -64,6 +64,16 @@ class UsersRepository {
     return record
   }
 
+  // Comparing Password in the Database to Password given by user when logging In
+  async comparePasswords(savedPass, suppliedPass) {
+    const [hashed, salt] = savedPass.split('.')
+    const hashedSuppliedBuffer = await scrypt(suppliedPass, salt, 64)
+
+    return hashed === hashedSuppliedBuffer.toString('hex')
+  }
+
+
+
   // METHOD TO WRITE CONTENT INTO THE USER-DATA FILE
   async writeAll(records) {
     await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2))
