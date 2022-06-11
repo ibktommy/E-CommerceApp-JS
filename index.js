@@ -61,7 +61,7 @@ app.post('/register', async (req, res) => {
   res.send('Account Created!')
 })
 
-// Logging In User
+// LOGGING IN USER
 app.get('/login', (req, res) => {
   res.send(`
     <div>
@@ -86,7 +86,8 @@ app.post('/login', async (req, res) => {
   }
 
   // Condition to check if user password is Valid
-  if (user.password !== password) {
+  const validPassword = await usersRepo.comparePasswords(user.password, password)
+  if (!validPassword) {
     return res.send('Password Is Invalid!')
   }
 
