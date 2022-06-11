@@ -44,6 +44,11 @@ app.post('/',  async (req, res) => {
     return res.send('Passwords Do not Match!')
   }
 
+  // Create A User in the User_Repo to represent a valid User
+  const user = await usersRepo.create({ email, password })
+
+  
+
   res.send('Account Created!')
 })
 

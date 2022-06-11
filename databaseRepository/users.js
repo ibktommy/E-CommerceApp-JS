@@ -42,6 +42,9 @@ class UsersRepository {
 
     // Write the Updated 'records' array back to this.filename
     await this.writeAll(records)
+
+    // Return the Atrributes Object created
+    return attributes
   }
 
   // METHOD TO WRITE CONTENT INTO THE USER-DATA FILE
