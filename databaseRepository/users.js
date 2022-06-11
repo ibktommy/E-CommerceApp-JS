@@ -4,6 +4,12 @@ const fs = require('fs')
 // Requiring Crypto Library
 const crypto = require('crypto')
 
+// Requiring Util Library
+const utils = require('util')
+
+// Using the utils Library to create a functon that returns a promise
+const scrypt = utils.promisify(crypto.scrypt)
+
 // Creating a single class that will be responsible for data access
 class UsersRepository {
   constructor(filename) {
@@ -38,7 +44,9 @@ class UsersRepository {
     // Creating Random Salt keys
     const salt = crypto.randomBytes(8).toString('hex')
 
-    
+    // Using crypto-scrypt to hash the user password
+    const hashed = await scrypt(attributes.password, salt, 64)
+
     // Get existing list of users of in user-data file
     const records = await this.getAll()
 
