@@ -61,6 +61,12 @@ app.post('/register', async (req, res) => {
   res.send('Account Created!')
 })
 
+// Logging Out the User
+app.get('/logout', async(req, res) => {
+  req.session = null
+  res.send('You have been logged Out!')
+})
+
 // Let App Listen for Incoming Network Request from the browser
 app.listen(5000, () => {
   console.log('App is Listening for Request')
