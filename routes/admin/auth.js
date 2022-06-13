@@ -4,20 +4,12 @@ const router = express.Router()
 
 // Require the UsersRepository Class
 const usersRepo = require('../../databaseRepository/users')
+// Requiring the Register HTML template
+const registerTemplate = require('../../views/admin/auth/register')
 
 // Route Handler - Letting the Web Server know what to do when it receives a Network Request from the Browser
 router.get('/register', (req, res) => {
-  res.send(`
-    <div>
-      Your User ID is: ${req.session.userID}
-      <form method="POST">
-        <input name="email" type="email" placeholder="Email"/>
-        <input name="password" type="password" placeholder="Password"/>
-        <input name="confirmPassword" type="password" placeholder="Confirm Password"/>
-        <button>Register An Account</button>
-      </form>
-    </div>
-  `)
+  res.send(registerTemplate({ req }))
 })
 // Creating A Post request for the Web Server
 // Post Request Handler When User Registers An Account
