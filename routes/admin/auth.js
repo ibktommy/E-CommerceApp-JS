@@ -54,7 +54,12 @@ router.post(
 			.isLength({ min: 5, max: 20 })
 			.withMessage(
 				"Your Password must be a mininim of 4 characters or maximum character of 20",
-			),
+			)
+			.custom((confirmPassword, { req }) => {
+				if (confirmPassword !== req.body.password) {
+					throw new Error('Your Passwords do not Match!')
+				}
+			}),
 	],
 	async (req, res) => {
 		const errors = validationResult(req);
