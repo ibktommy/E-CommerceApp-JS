@@ -2,6 +2,9 @@
 const express = require("express");
 const router = express.Router();
 
+// Requiring the Express Validator
+const { body, check, validationResult } = require("express-validator");
+
 // Require the UsersRepository Class
 const usersRepo = require("../../databaseRepository/users");
 
@@ -16,32 +19,42 @@ router.get("/register", (req, res) => {
 
 // Creating A Post request for the Web Server
 // Post Request Handler When User Registers An Account
-router.post("/register", async (req, res) => {
-	const { email, password, confirmPassword } = req.body;
+router.post(
+	"/register",
+	[
+		check("email").trim().normalizeEmail().isEmail().withMessage("Enter A Valid Email!"),
+		check("password").trim().isLength({ min: 5, max: 20 }).withMessage("Your Password must be a mininim of 4 characters or maximum character of 20"),
+		check("confirmPassword").trim().isLength({ min: 5, max: 20 }).withMessage("Your Password must be a mininim of 4 characters or maximum character of 20"),
+	],
+	async (req, res) => {
+		const errors = validationResult(req);
+		console.log(errors);
+		const { email, password, confirmPassword } = req.body;
 
-	// Validating user email - if it exist already
-	const existingUser = await usersRepo.getOneByKeyValueContent({ email });
+		// Validating user email - if it exist already
+		const existingUser = await usersRepo.getOneByKeyValueContent({ email });
 
-	// Condition to check if email already exist in the Users Database
-	if (existingUser) {
-		return res.send(
-			"This Email has been used by another User, register with another email",
-		);
-	}
+		// Condition to check if email already exist in the Users Database
+		if (existingUser) {
+			return res.send(
+				"This Email has been used by another User, register with another email",
+			);
+		}
 
-	// Condition to check if user password is inputted correctly
-	if (password !== confirmPassword) {
-		return res.send("Passwords Do not Match!");
-	}
+		// Condition to check if user password is inputted correctly
+		if (password !== confirmPassword) {
+			return res.send("Passwords Do not Match!");
+		}
 
-	// Create A User in the User_Repo to represent a valid User
-	const user = await usersRepo.create({ email, password });
+		// Create A User in the User_Repo to represent a valid User
+		const user = await usersRepo.create({ email, password });
 
-	// Store the ID of the validated user inside the users cookies
-	req.session.userID = user.id; //Added by cookie-session
+		// Store the ID of the validated user inside the users cookies
+		req.session.userID = user.id; //Added by cookie-session
 
-	res.send("Account Created!");
-});
+		res.send("Account Created!");
+	},
+);
 
 // LOGGING IN USER
 router.get("/login", (req, res) => {
