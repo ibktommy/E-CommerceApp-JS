@@ -2,7 +2,7 @@
 const layout = require('../layout')
 
 // Function to return and exports HTML template for registering user
-module.exports = ({ req }) => {
+module.exports = ({ req , errors }) => {
   return layout({ 
     content: `
       <div>

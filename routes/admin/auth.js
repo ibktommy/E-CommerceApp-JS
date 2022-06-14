@@ -35,7 +35,13 @@ router.post(
 
 	async (req, res) => {
 		const errors = validationResult(req);
-		console.log(errors);
+		
+		// Condition to check if an errors exists in the validationResult
+		if(!errors.isEmpty()) {
+			return registerTemplate({ req, errors })
+		}
+
+
 		const { email, password, confirmPassword } = req.body;
 
 		// Condition to check if user password is inputted correctly
