@@ -3,7 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 // Requiring the Express Validator
-const { body, check, validationResult } = require("express-validator");
+const { check, validationResult } = require("express-validator");
+const { requireEmail, requirePassword } = require('./validator')
 
 // Require the UsersRepository Class
 const usersRepo = require("../../databaseRepository/users");
@@ -11,6 +12,7 @@ const usersRepo = require("../../databaseRepository/users");
 // Requiring the Register and Login HTML template
 const registerTemplate = require("../../views/admin/auth/register");
 const loginTemplate = require("../../views/admin/auth/login");
+const { requireEmail, requirePassword } = require("./validator");
 
 // Route Handler - Letting the Web Server know what to do when it receives a Network Request from the Browser
 router.get("/register", (req, res) => {
@@ -21,46 +23,16 @@ router.get("/register", (req, res) => {
 // Post Request Handler When User Registers An Account
 router.post(
 	"/register",
-
-	// Checking Email With Express-Validator
+	
 	[
-		check("email")
-			.trim()
-			.normalizeEmail()
-			.isEmail()
-			.withMessage("Enter A Valid Email!")
-			.custom(async (email) => {
-				// Validating user email - if it exist already
-				const existingUser = await usersRepo.getOneByKeyValueContent({ email });
-				// Condition to check if email already exist in the Users Database
-				if (existingUser) {
-					throw new Error(
-						"This Email has been used by another User, register with another email",
-					);
-				}
-			}),
-
+		// Checking Email With Express-Validator
+		requireEmail,
 		// Checking Password With Express-Validator
-		check("password")
-			.trim()
-			.isLength({ min: 5, max: 20 })
-			.withMessage(
-				"Your Password must be a mininim of 4 characters or maximum character of 20",
-			),
-
+		requirePassword,
 		// Checking confirmPassword With Express-Validator
-		check("confirmPassword")
-			.trim()
-			.isLength({ min: 5, max: 20 })
-			.withMessage(
-				"Your Password must be a mininim of 4 characters or maximum character of 20",
-			)
-			.custom((confirmPassword, { req }) => {
-				if (confirmPassword !== req.body.password) {
-					throw new Error('Your Passwords do not Match!')
-				}
-			}),
+		requireConfirmPassword
 	],
+
 	async (req, res) => {
 		const errors = validationResult(req);
 		console.log(errors);
