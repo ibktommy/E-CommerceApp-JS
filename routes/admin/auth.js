@@ -4,7 +4,7 @@ const router = express.Router();
 
 // Requiring the Express Validator
 const { check, validationResult } = require("express-validator");
-const { requireEmail, requirePassword } = require('./validator')
+const { requireEmail, requirePassword, requireConfirmPassword } = require("./validator");
 
 // Require the UsersRepository Class
 const usersRepo = require("../../databaseRepository/users");
@@ -12,7 +12,7 @@ const usersRepo = require("../../databaseRepository/users");
 // Requiring the Register and Login HTML template
 const registerTemplate = require("../../views/admin/auth/register");
 const loginTemplate = require("../../views/admin/auth/login");
-const { requireEmail, requirePassword } = require("./validator");
+
 
 // Route Handler - Letting the Web Server know what to do when it receives a Network Request from the Browser
 router.get("/register", (req, res) => {
@@ -23,7 +23,7 @@ router.get("/register", (req, res) => {
 // Post Request Handler When User Registers An Account
 router.post(
 	"/register",
-	
+
 	[
 		// Checking Email With Express-Validator
 		requireEmail,
