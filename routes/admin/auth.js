@@ -35,20 +35,13 @@ router.post(
 
 	async (req, res) => {
 		const errors = validationResult(req);
-		
-		// Condition to check if an errors exists in the validationResult
-		if(!errors.isEmpty()) {
-			return registerTemplate({ req, errors })
-		}
 
+		// Condition to check if an errors exists in the validationResult
+		if (!errors.isEmpty()) {
+			return res.send(registerTemplate({ req, errors }))
+		}
 
 		const { email, password, confirmPassword } = req.body;
-
-		// Condition to check if user password is inputted correctly
-		if (password !== confirmPassword) {
-			return res.send("Passwords Do not Match!");
-		}
-
 		// Create A User in the User_Repo to represent a valid User
 		const user = await usersRepo.create({ email, password });
 

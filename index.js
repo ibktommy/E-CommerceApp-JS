@@ -24,8 +24,6 @@ app.use(cookiesSession({
 //Hookng Up the Router to our App Object
 app.use(authRouter)
 
-
-
 // Let App Listen for Incoming Network Request from the browser
 app.listen(5000, () => {
   console.log('App is Listening for Request')
