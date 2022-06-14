@@ -36,6 +36,40 @@ module.exports = {
       if (confirmPassword !== req.body.password) {
         throw new Error('Your Passwords do not Match!')
       }
+    }),
+  requireEmailExists: check("email")
+    .trim()
+    .normalizeEmail()
+    .isEmail()
+    .withMessage("Enter A Valid Email")
+    // Condition to check if email already exist in the Users Database
+    .custom(async (email) => {
+      const user = await usersRepo.getOneByKeyValueContent({ email });
+      
+      if (!user) {
+        throw new Error("Email not Found!");
+      }
+    }),
+  requireValidPasswordUser: check("password")
+    .trim()
+    .custom(async (password, { req }) => {
+      const user = await usersRepo.getOneByKeyValueContent({
+        email: req.body.email,
+      });
+
+      // Checking if user exist
+      if (!user) {
+        throw new Error("Invalid User");
+      }
+
+      const validPassword = await usersRepo.comparePasswords(
+        user.password,
+        password,
+      );
+      // Condition to check if user password is Valid
+      if (!validPassword) {
+        throw new Error("Invalid Password!");
+      }
     })
 }
 

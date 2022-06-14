@@ -8,6 +8,8 @@ const {
 	requireEmail,
 	requirePassword,
 	requireConfirmPassword,
+	requireEmailExists,
+	requireValidPasswordUser
 } = require("./validator");
 
 // Require the UsersRepository Class
@@ -63,40 +65,10 @@ router.get("/login", (req, res) => {
 router.post(
 	"/login",
 	[
-		check("email")
-			.trim()
-			.normalizeEmail()
-			.isEmail()
-			.withMessage("Enter A Valid Email")
-			// Condition to check if email already exist in the Users Database
-			.custom(async (email) => {
-				const user = await usersRepo.getOneByKeyValueContent({ email });
-				if (!user) {
-					throw new Error("Email not Found!");
-				}
-			}),
-
-		check("password")
-			.trim()
-			.custom(async (password, { req }) => {
-				const user = await usersRepo.getOneByKeyValueContent({
-					email: req.body.email,
-				});
-
-				// Checking if user exist
-				if (!user) {
-					throw new Error("Invalid User");
-				}
-
-				const validPassword = await usersRepo.comparePasswords(
-					user.password,
-					password,
-				);
-				// Condition to check if user password is Valid
-				if (!validPassword) {
-					throw new Error("Invalid Password!");
-				}
-			}),
+		// Validating User Email
+		requireEmailExists,
+		// Validating User Password
+		requireValidPasswordUser,
 	],
 
 	async (req, res) => {
@@ -109,7 +81,7 @@ router.post(
 		const user = await usersRepo.getOneByKeyValueContent({ email });
 
 		// Store the ID of the validated user inside the users cookies
-		req.session.userID = user.id; //Added by cookie-session
+		// req.session.userID = user.id; //Added by cookie-session
 
 		res.send("You Have Succesfully Logged In");
 	},
