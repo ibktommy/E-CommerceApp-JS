@@ -1,7 +1,7 @@
 // Requiring the layout function
 const layout = require('../layout')
 
-// Creating Function that returns the error message in valiadting user account
+// Creating Function that returns the error message in validating user account during Registration
 const getError = (errors, prop) => {
   try {
     return errors.mapped()[prop].msg
