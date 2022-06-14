@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 // Requiring the Express Validator
-const { check, validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 const {
 	requireEmail,
 	requirePassword,
@@ -13,7 +13,7 @@ const {
 } = require("./validator");
 
 // Require the UsersRepository Class
-const usersRepo = require("../../databaseRepository/users");
+const usersRepo = require("../../databaseRepository/users")
 
 // Requiring the Register and Login HTML template
 const registerTemplate = require("../../views/admin/auth/register");
@@ -40,6 +40,7 @@ router.post(
 
 	async (req, res) => {
 		const errors = validationResult(req);
+		console.log(errors)
 
 		// Condition to check if an errors exists in the validationResult
 		if (!errors.isEmpty()) {
@@ -47,11 +48,12 @@ router.post(
 		}
 
 		const { email, password, confirmPassword } = req.body;
-		// Create A User in the User_Repo to represent a valid User
+		// Create A User in the User-Repository to represent a valid User
 		const user = await usersRepo.create({ email, password });
 
 		// Store the ID of the validated user inside the users cookies
-		req.session.userID = user.id; //Added by cookie-session
+		//Added by cookie-session
+		req.session.userID = user.id;
 
 		res.send("Account Created!");
 	},
@@ -59,7 +61,7 @@ router.post(
 
 // LOGGING IN USER
 router.get("/login", (req, res) => {
-	res.send(loginTemplate());
+	res.send(loginTemplate({}));
 });
 // Post Request Handler when User Logins to Account
 router.post(
@@ -73,7 +75,11 @@ router.post(
 
 	async (req, res) => {
 		const errors = validationResult(req);
-		console.log(errors);
+		console.log(errors)
+
+		if (!errors.isEmpty()) {
+			return res.send(loginTemplate({ errors }))
+		}
 
 		const { email } = req.body;
 
@@ -81,7 +87,8 @@ router.post(
 		const user = await usersRepo.getOneByKeyValueContent({ email });
 
 		// Store the ID of the validated user inside the users cookies
-		// req.session.userID = user.id; //Added by cookie-session
+		//Added by cookie-session
+		req.session.userID = user.id;
 
 		res.send("You Have Succesfully Logged In");
 	},

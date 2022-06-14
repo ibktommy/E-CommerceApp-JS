@@ -45,7 +45,7 @@ module.exports = {
     // Condition to check if email already exist in the Users Database
     .custom(async (email) => {
       const user = await usersRepo.getOneByKeyValueContent({ email });
-      
+
       if (!user) {
         throw new Error("Email not Found!");
       }
@@ -59,7 +59,7 @@ module.exports = {
 
       // Checking if user exist
       if (!user) {
-        throw new Error("Invalid User");
+        throw new Error("Invalid Password!");
       }
 
       const validPassword = await usersRepo.comparePasswords(

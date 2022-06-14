@@ -37,7 +37,7 @@ class UsersRepository {
   }
 
   // METHOD TO ADD CONTENT IN THE USER-DATA JSON FILE
-  async create(attributes) { 
+  async create(attributes) {
     // Adding a Random ID to each content created
     attributes.id = this.randomID()
 
