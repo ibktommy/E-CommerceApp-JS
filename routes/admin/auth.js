@@ -21,25 +21,45 @@ router.get("/register", (req, res) => {
 // Post Request Handler When User Registers An Account
 router.post(
 	"/register",
+
+	// Checking Email With Express-Validator
 	[
-		check("email").trim().normalizeEmail().isEmail().withMessage("Enter A Valid Email!"),
-		check("password").trim().isLength({ min: 5, max: 20 }).withMessage("Your Password must be a mininim of 4 characters or maximum character of 20"),
-		check("confirmPassword").trim().isLength({ min: 5, max: 20 }).withMessage("Your Password must be a mininim of 4 characters or maximum character of 20"),
+		check("email")
+			.trim()
+			.normalizeEmail()
+			.isEmail()
+			.withMessage("Enter A Valid Email!")
+			.custom(async (email) => {
+				// Validating user email - if it exist already
+				const existingUser = await usersRepo.getOneByKeyValueContent({ email });
+				// Condition to check if email already exist in the Users Database
+				if (existingUser) {
+					throw new Error(
+						"This Email has been used by another User, register with another email",
+					);
+				}
+			}),
+
+		// Checking Password With Express-Validator
+		check("password")
+			.trim()
+			.isLength({ min: 5, max: 20 })
+			.withMessage(
+				"Your Password must be a mininim of 4 characters or maximum character of 20",
+			),
+
+		// Checking confirmPassword With Express-Validator
+		check("confirmPassword")
+			.trim()
+			.isLength({ min: 5, max: 20 })
+			.withMessage(
+				"Your Password must be a mininim of 4 characters or maximum character of 20",
+			),
 	],
 	async (req, res) => {
 		const errors = validationResult(req);
 		console.log(errors);
 		const { email, password, confirmPassword } = req.body;
-
-		// Validating user email - if it exist already
-		const existingUser = await usersRepo.getOneByKeyValueContent({ email });
-
-		// Condition to check if email already exist in the Users Database
-		if (existingUser) {
-			return res.send(
-				"This Email has been used by another User, register with another email",
-			);
-		}
 
 		// Condition to check if user password is inputted correctly
 		if (password !== confirmPassword) {
