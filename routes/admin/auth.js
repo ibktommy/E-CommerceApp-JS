@@ -68,33 +68,45 @@ router.post(
 			.normalizeEmail()
 			.isEmail()
 			.withMessage("Enter A Valid Email")
+			// Condition to check if email already exist in the Users Database
 			.custom(async (email) => {
-				const user = await usersRepo.getOneByKeyValueContent({ email })
+				const user = await usersRepo.getOneByKeyValueContent({ email });
 				if (!user) {
-					throw new Error('Email not Found!')
+					throw new Error("Email not Found!");
 				}
 			}),
-		check("password").trim(),
+
+		check("password")
+			.trim()
+			.custom(async (password, { req }) => {
+				const user = await usersRepo.getOneByKeyValueContent({
+					email: req.body.email,
+				});
+
+				// Checking if user exist
+				if (!user) {
+					throw new Error("Invalid User");
+				}
+
+				const validPassword = await usersRepo.comparePasswords(
+					user.password,
+					password,
+				);
+				// Condition to check if user password is Valid
+				if (!validPassword) {
+					throw new Error("Invalid Password!");
+				}
+			}),
 	],
+
 	async (req, res) => {
-		const { email, password } = req.body;
+		const errors = validationResult(req);
+		console.log(errors);
+
+		const { email } = req.body;
 
 		// Getting A User Based on the email passed
 		const user = await usersRepo.getOneByKeyValueContent({ email });
-
-		// Condition to check if email already exist in the Users Database
-		if (!user) {
-			return res.send("Email Not Found!");
-		}
-
-		// Condition to check if user password is Valid
-		const validPassword = await usersRepo.comparePasswords(
-			user.password,
-			password,
-		);
-		if (!validPassword) {
-			return res.send("Password Is Invalid!");
-		}
 
 		// Store the ID of the validated user inside the users cookies
 		req.session.userID = user.id; //Added by cookie-session
@@ -103,7 +115,7 @@ router.post(
 	},
 );
 
-// Logging Out the User
+// LOGGING OUT USER
 router.get("/logout", async (req, res) => {
 	req.session = null;
 	res.send("You have been logged Out!");

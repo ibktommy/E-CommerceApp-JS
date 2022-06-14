@@ -72,8 +72,6 @@ class UsersRepository {
     return hashed === hashedSuppliedBuffer.toString('hex')
   }
 
-
-
   // METHOD TO WRITE CONTENT INTO THE USER-DATA FILE
   async writeAll(records) {
     await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2))
