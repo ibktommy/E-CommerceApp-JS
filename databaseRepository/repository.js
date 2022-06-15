@@ -19,6 +19,17 @@ module.exports = class Repository {
 
   }
 
+  // Creating a Global-Create Method
+  async create(attributes) {
+    attributes.id = this.randomID()
+
+    const records = await this.getALl
+    records.push(attributes)
+    await this.writeAll(records)
+
+    return attributes
+  }
+
   // METHOD TO GET CONTENT OF USER-DATA JSON FILE
   // Accessing the Repository Data File and Returning it
   async getAll() {
