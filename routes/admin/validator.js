@@ -34,7 +34,7 @@ module.exports = {
     )
     .custom((confirmPassword, { req }) => {
       if (confirmPassword !== req.body.password) {
-        throw new Error('Your Passwords do not Match!')
+        throw new Error("Your Passwords do not Match!");
       }
     }),
   requireEmailExists: check("email")
@@ -70,6 +70,7 @@ module.exports = {
       if (!validPassword) {
         throw new Error("Invalid Password!");
       }
-    })
-}
-
+    }),
+  requireTitle: check("title").trim().isLength({ min: 3, max: 20 }),
+  requirePrice: check("price").trim().toFloat().isFloat({ min: 2 }),
+};

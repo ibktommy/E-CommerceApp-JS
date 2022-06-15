@@ -19,7 +19,7 @@ const usersRepo = require("../../databaseRepository/users")
 const registerTemplate = require("../../views/admin/auth/register");
 const loginTemplate = require("../../views/admin/auth/login");
 
-// Route Handler - Letting the Web Server know what to do when it receives a Network Request from the Browser
+// Route Handler - PASSING A NETWORK REQUEST TO THE SERVER FROM THE BROWSER WHEN ON THE REGISTER-USER PAGE
 router.get("/register", (req, res) => {
 	res.send(registerTemplate({ req }));
 });
