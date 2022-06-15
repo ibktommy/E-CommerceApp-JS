@@ -13,6 +13,9 @@ const cookiesSession = require('cookie-session')
 // Creating App Object that Contains all the things the web server can do
 const app = express()
 
+// Getting files from "public" folder to be loaded as Middleware
+app.use(express.static('public'))
+
 // Automatically calling the bodyParser Middleware function in every single Route Handlers
 app.use(bodyParser.urlencoded({ extended: true }))
 
