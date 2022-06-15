@@ -13,9 +13,9 @@ const Repository = require('./repository')
 // Using the utils Library to create a functon that returns a promise
 const scrypt = utils.promisify(crypto.scrypt)
 
-// Creating a single class that will be responsible for data access
+// Creating a single class that will be responsible for data access and manipulation
 class UsersRepository extends Repository {
-  // METHOD TO ADD CONTENT IN THE USER-DATA JSON FILE
+  // METHOD TO CREATE CONTENT IN THE USER-DATA JSON FILE
   async create(attributes) {
     // Adding a Random ID to each content created
     attributes.id = this.randomID()
@@ -43,7 +43,7 @@ class UsersRepository extends Repository {
     return record
   }
 
-  // Comparing Password in the Database to Password given by user when logging In
+  //  METHOD TO COMPARE PASSWORD IN THE DATABASE TO PASSWORD GIVEN BY USER WHEN LOGGING IN
   async comparePasswords(savedPass, suppliedPass) {
     const [hashed, salt] = savedPass.split('.')
     const hashedSuppliedBuffer = await scrypt(suppliedPass, salt, 64)

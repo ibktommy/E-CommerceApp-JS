@@ -2,6 +2,9 @@
 const express = require("express");
 const router = express.Router();
 
+// Requiring the Products Repository
+const productsRepo = require('../../databaseRepository/products')
+
 router.get('./admin/products', (req, res) => {
 
 })
