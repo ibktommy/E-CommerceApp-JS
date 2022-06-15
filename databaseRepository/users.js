@@ -13,7 +13,7 @@ const Repository = require('./repository')
 // Using the utils Library to create a functon that returns a promise
 const scrypt = utils.promisify(crypto.scrypt)
 
-// Creating a single class that will be responsible for data access and manipulation
+// Creating a single class that will be responsible for accessing and managing user account data
 class UsersRepository extends Repository {
   // METHOD TO CREATE CONTENT IN THE USER-DATA JSON FILE
   async create(attributes) {
