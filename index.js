@@ -3,6 +3,8 @@ const express = require('express')
 
 // Linking the Express App to our Routes-Auth
 const authRouter = require('./routes/admin/auth')
+// Linking the Express App to our Routes-Products
+const productsRouter = require('./routes/admin/products')
 
 // A Global Middleware Function that runs before we make request
 const bodyParser = require('body-parser')
@@ -24,8 +26,9 @@ app.use(cookiesSession({
   keys: ['dg34uigfhf8rydh32']
 }))
 
-//Hookng Up the Router to our App Object
+//Hookng Up the Router to our App Object - Linking to A New Route/Page
 app.use(authRouter)
+app.use(productsRouter)
 
 // Let App Listen for Incoming Network Request from the browser
 app.listen(5000, () => {
