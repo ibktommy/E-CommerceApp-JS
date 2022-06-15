@@ -71,6 +71,6 @@ module.exports = {
         throw new Error("Invalid Password!");
       }
     }),
-  requireTitle: check("title").trim().isLength({ min: 3, max: 20 }),
-  requirePrice: check("price").trim().toFloat().isFloat({ min: 2 }),
+  requireTitle: check("title").trim().isLength({ min: 3, max: 20 }).withMessage('The Product Title should be between 3 and 20 characters'),
+  requirePrice: check("price").trim().toFloat().isFloat({ min: 1 }).withMessage('The Product Price must be a Number Greater than 1'),
 };
