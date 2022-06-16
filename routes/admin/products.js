@@ -21,8 +21,8 @@ router.get("/admin/products/new", (req, res) => {
 // Route Handler - PASSING NETWORK REQUEST FROM THE SERVER BACK TO THE BROWSER
 router.post(
   "/admin/products/new",
-  [requireTitle, requirePrice],
   upload.single("image"),
+  [requireTitle, requirePrice],
   async (req, res) => {
     const errors = validationResult(req);
 
