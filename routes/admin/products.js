@@ -25,7 +25,7 @@ router.post('/admin/products/new', [
   requirePrice
 ], (req, res) => {
   const errors = validationResult(req)
-  console.log(errors)
+  console.log(req.body)
 
   res.send('Product Created!')
 })
