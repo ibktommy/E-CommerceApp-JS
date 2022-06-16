@@ -9,11 +9,11 @@ const {
 	requirePassword,
 	requireConfirmPassword,
 	requireEmailExists,
-	requireValidPasswordUser
+	requireValidPasswordUser,
 } = require("./validator");
 
 // Require the UsersRepository Class
-const usersRepo = require("../../databaseRepository/users")
+const usersRepo = require("../../databaseRepository/users");
 
 // Requiring the Register and Login HTML template
 const registerTemplate = require("../../views/admin/auth/register");
@@ -35,7 +35,7 @@ router.post(
 		// Checking Password With Express-Validator
 		requirePassword,
 		// Checking confirmPassword With Express-Validator
-		requireConfirmPassword,
+		// requireConfirmPassword,
 	],
 	// Condition to check if an errors exists in the validation Result
 	handleErrors(registerTemplate),
@@ -45,9 +45,11 @@ router.post(
 		// Create A User in the User-Repository to represent a valid User
 		const user = await usersRepo.create({ email, password });
 
+		console.log(user);
+
 		// Store the ID of the validated user inside the users cookies
 		//Added by cookie-session
-		req.session.userID = user.id;
+		req.session.userId = user.id;
 
 		res.send("Account Created!");
 	},

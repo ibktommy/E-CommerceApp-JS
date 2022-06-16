@@ -6,7 +6,7 @@ module.exports = class Repository {
   constructor(filename) {
     // Condition to check if we have a filename when we create an intance of our Repository
     if (!filename) {
-      throw new Error('Creating A Repository ')
+      throw new Error('Creating A Repository Requires a Filename')
     }
 
     this.filename = filename
@@ -19,6 +19,14 @@ module.exports = class Repository {
 
   }
 
+  // METHOD TO GET CONTENT OF USER-DATA JSON FILE
+  // Accessing the Repository Data File and Returning it
+  async getAll() {
+    return JSON.parse(await fs.promises.readFile(this.filename, {
+      encoding: 'utf8'
+    }))
+  }
+
   // Creating a Global-Create Method
   async create(attributes) {
     attributes.id = this.randomID()
@@ -28,14 +36,6 @@ module.exports = class Repository {
     await this.writeAll(records)
 
     return attributes
-  }
-
-  // METHOD TO GET CONTENT OF USER-DATA JSON FILE
-  // Accessing the Repository Data File and Returning it
-  async getAll() {
-    return JSON.parse(await fs.promises.readFile(this.filename, {
-      encoding: 'utf8'
-    }))
   }
 
   // METHOD TO WRITE CONTENT INTO THE USER-DATA FILE
