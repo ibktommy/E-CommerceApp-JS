@@ -1,7 +1,7 @@
 // Require Express Library
 const express = require("express");
 const router = express.Router();
-const { validationResult } = require("express-validator");
+const { handleErrors } = require("./customMiddleware"); // Requiring the custom-Middleware Function
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -23,16 +23,11 @@ router.post(
   "/admin/products/new",
   upload.single("image"),
   [requireTitle, requirePrice],
+  handleErrors(newProductsTemplate), // Condition to check if an errors exists in the validation Result
   async (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      return res.send(newProductsTemplate({ errors }))
-    }
-
-    const image = req.file.buffer.toString('base64');
-    const { title, price } = req.body
-    await productsRepo.create({ title, price, image })
+    const image = req.file.buffer.toString("base64");
+    const { title, price } = req.body;
+    await productsRepo.create({ title, price, image });
 
     res.send("Product Created!");
   },

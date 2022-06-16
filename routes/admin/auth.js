@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 // Requiring the Express Validator
-const { validationResult } = require("express-validator");
+const { handleErrors } = require("./customMiddleware");
 const {
 	requireEmail,
 	requirePassword,
@@ -37,17 +37,11 @@ router.post(
 		// Checking confirmPassword With Express-Validator
 		requireConfirmPassword,
 	],
+	// Condition to check if an errors exists in the validation Result
+	handleErrors(registerTemplate),
 
 	async (req, res) => {
-		const errors = validationResult(req);
-		console.log(errors)
-
-		// Condition to check if an errors exists in the validationResult
-		if (!errors.isEmpty()) {
-			return res.send(registerTemplate({ req, errors }));
-		}
-
-		const { email, password, confirmPassword } = req.body;
+		const { email, password } = req.body;
 		// Create A User in the User-Repository to represent a valid User
 		const user = await usersRepo.create({ email, password });
 
@@ -72,15 +66,10 @@ router.post(
 		// Validating User Password
 		requireValidPasswordUser,
 	],
+	// Condition to check if an errors exists in the validation Result
+	handleErrors(loginTemplate),
 
 	async (req, res) => {
-		const errors = validationResult(req);
-		console.log(errors)
-
-		if (!errors.isEmpty()) {
-			return res.send(loginTemplate({ errors }))
-		}
-
 		const { email } = req.body;
 
 		// Getting A User Based on the email passed
