@@ -32,9 +32,9 @@ router.post(
   [requireTitle, requirePrice],
   handleErrors(newProductsTemplate), // Condition to check if an errors exists in the validation Result
   async (req, res) => {
-    const image = req.file.buffer.toString("base64");
+    // const image = req.file.buffer.toString("base64");
     const { title, price } = req.body;
-    await productsRepo.create({ title, price, image });
+    await productsRepo.create({ title, price });
 
     res.send("Product Created!");
   },
