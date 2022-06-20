@@ -1,7 +1,7 @@
 // Require Express Library
 const express = require("express");
 const router = express.Router();
-const { handleErrors } = require("./customMiddleware"); // Requiring the custom-Middleware Function
+const { handleErrors, requireAuth } = require("./customMiddleware"); // Requiring the custom-Middleware Function
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -14,7 +14,8 @@ const listProductsTemplate = require("../../views/admin/products/index");
 // Requiring the Validation Methods
 const { requireTitle, requirePrice } = require("./validator");
 
-router.get("/admin/products", async (req, res) => {
+// ROUTE HANDLERS
+router.get("/admin/products", requireAuth, async (req, res) => {
   // Get All Existing Products
   const products = await productsRepo.getAll()
   // Sending Product-List from the Products Database to the Browser
@@ -22,12 +23,13 @@ router.get("/admin/products", async (req, res) => {
 });
 
 // Route Handler - PASSING A NETWORK REQUEST TO THE SERVER FROM THE BROWSER WHEN ON THE "CREATE-NEW-PRODUCT-PAGE"
-router.get("/admin/products/new", (req, res) => {
+router.get("/admin/products/new", requireAuth, (req, res) => {
   res.send(newProductsTemplate({}));
 });
 // Route Handler - PASSING NETWORK REQUEST FROM THE SERVER BACK TO THE BROWSER
 router.post(
   "/admin/products/new",
+  requireAuth,
   upload.single("image"),
   [requireTitle, requirePrice],
   handleErrors(newProductsTemplate), // Condition to check if an errors exists in the validation Result
