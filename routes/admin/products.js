@@ -46,7 +46,7 @@ router.post(
 );
 
 // EDITING PRODUCT ROUTE HANDLER
-router.get('admin/products/:id/edit', async (req, res) => {
+router.get('/admin/products/:id/editProduct', requireAuth, async (req, res) => {
   const product = await productsRepo.getOne(req.params.id)
 
   if (!product) {
