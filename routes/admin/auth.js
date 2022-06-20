@@ -49,7 +49,8 @@ router.post(
 		//Added by cookie-session
 		req.session.userId = user.id;
 
-		res.send("Account Created!");
+		// Redirect To Product-Index Page After Creating A New Product
+		res.redirect('/admin/products')
 	},
 );
 
@@ -79,7 +80,8 @@ router.post(
 		//Added by cookie-session
 		req.session.userID = user.id;
 
-		res.send("You Have Succesfully Logged In");
+		// Redirect To Product-Index Page After Creating A New Product
+		res.redirect('/admin/products')
 	},
 );
 
