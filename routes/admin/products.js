@@ -11,10 +11,12 @@ const productsRepo = require("../../databaseRepository/products");
 const newProductsTemplate = require("../../views/admin/products/newProduct");
 // Requiring Products List Template
 const listProductsTemplate = require("../../views/admin/products/index");
+// Requiring Edit-Product Template
+const editProductsTemplate = require("../../views/admin/products/editProduct");
 // Requiring the Validation Methods
 const { requireTitle, requirePrice } = require("./validator");
 
-// ROUTE HANDLERS
+// PRODUCT PAGE ROUTE HANDLERS
 router.get("/admin/products", requireAuth, async (req, res) => {
   // Get All Existing Products
   const products = await productsRepo.getAll()
@@ -42,5 +44,16 @@ router.post(
     res.redirect('/admin/products')
   },
 );
+
+// EDITING PRODUCT ROUTE HANDLER
+router.get('admin/products/:id/edit', async (req, res) => {
+  const product = await productsRepo.getOne(req.params.id)
+
+  if (!product) {
+    return res.send('Product Not Found!')
+  }
+
+  res.send(editProductsTemplate({ product }))
+})
 
 module.exports = router;
