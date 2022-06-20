@@ -7,14 +7,18 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 // Requiring the Products Repository
 const productsRepo = require("../../databaseRepository/products");
-// Requiring Products Template
+// Requiring New Products Template
 const newProductsTemplate = require("../../views/admin/products/newProduct");
+// Requiring Products List Template
+const listProductsTemplate = require("../../views/admin/products/index");
 // Requiring the Validation Methods
 const { requireTitle, requirePrice } = require("./validator");
 
-router.get("/admin/products", async (req, res) => { 
+router.get("/admin/products", async (req, res) => {
   // Get All Existing Products
   const products = await productsRepo.getAll()
+  // Sending Product-List from the Products Database to the Browser
+  res.send(listProductsTemplate({ products }))
 });
 
 // Route Handler - PASSING A NETWORK REQUEST TO THE SERVER FROM THE BROWSER WHEN ON THE "CREATE-NEW-PRODUCT-PAGE"
