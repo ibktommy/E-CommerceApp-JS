@@ -12,7 +12,10 @@ const newProductsTemplate = require("../../views/admin/products/newProduct");
 // Requiring the Validation Methods
 const { requireTitle, requirePrice } = require("./validator");
 
-router.get("/admin/products", (req, res) => { });
+router.get("/admin/products", async (req, res) => { 
+  // Get All Existing Products
+  const products = await productsRepo.getAll()
+});
 
 // Route Handler - PASSING A NETWORK REQUEST TO THE SERVER FROM THE BROWSER WHEN ON THE "CREATE-NEW-PRODUCT-PAGE"
 router.get("/admin/products/new", (req, res) => {
