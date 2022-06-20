@@ -36,7 +36,8 @@ router.post(
     const { title, price } = req.body;
     await productsRepo.create({ title, price });
 
-    res.send("Product Created!");
+    // Redirect To Product-Index Page After Creating A New Product
+    res.redirect('/admin/products')
   },
 );
 
