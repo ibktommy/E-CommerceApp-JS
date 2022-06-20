@@ -19,9 +19,9 @@ const { requireTitle, requirePrice } = require("./validator");
 // PRODUCT PAGE ROUTE HANDLERS
 router.get("/admin/products", requireAuth, async (req, res) => {
   // Get All Existing Products
-  const products = await productsRepo.getAll()
+  const products = await productsRepo.getAll();
   // Sending Product-List from the Products Database to the Browser
-  res.send(listProductsTemplate({ products }))
+  res.send(listProductsTemplate({ products }));
 });
 
 // Route Handler - PASSING A NETWORK REQUEST TO THE SERVER FROM THE BROWSER WHEN ON THE "CREATE-NEW-PRODUCT-PAGE"
@@ -41,19 +41,31 @@ router.post(
     await productsRepo.create({ title, price });
 
     // Redirect To Product-Index Page After Creating A New Product
-    res.redirect('/admin/products')
+    res.redirect("/admin/products");
   },
 );
 
 // EDITING PRODUCT ROUTE HANDLER
-router.get('/admin/products/:id/editProduct', requireAuth, async (req, res) => {
-  const product = await productsRepo.getOne(req.params.id)
+router.get("/admin/products/:id/editProduct", requireAuth, async (req, res) => {
+  const product = await productsRepo.getOne(req.params.id);
 
   if (!product) {
-    return res.send('Product Not Found!')
+    return res.send("Product Not Found!");
   }
 
-  res.send(editProductsTemplate({ product }))
-})
+  res.send(editProductsTemplate({ product }));
+});
+
+// Route Handler to receive the submission of the form
+router.post(
+  "/admin/products/:id/editProduct",
+  requireAuth,
+  upload.single("image"),
+  [requireTitle, requirePrice],
+  handleErrors(editProductsTemplate),
+  async (req, res) => {
+
+  },
+);
 
 module.exports = router;
