@@ -31,6 +31,7 @@ app.use(cookiesSession({
 app.use(authRouter)
 app.use(productsAdminRouter)
 app.use(productsIndexRouter)
+app.use(cartsRouter)
 
 // Let App Listen for Incoming Network Request from the browser
 app.listen(5000, () => {
