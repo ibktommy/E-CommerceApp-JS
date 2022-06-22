@@ -11,15 +11,17 @@ module.exports = ({ product, errors }) => {
           <form method="POST" enctype="multipart/form-data">
             <div class="field">
               <label class="label">Title</label>
-              <input value="${product.title
-      }" class="input" placeholder="Title" name="title">
+              <input value="${
+                product.title
+              }" class="input" placeholder="Title" name="title">
               <p class="help is-danger">${getError(errors, 'title')}</p>
             </div>
             
             <div class="field">
               <label class="label">Price</label>
-              <input value="${product.price
-      }" class="input" placeholder="Price" name="price">
+              <input value="${
+                product.price
+              }" class="input" placeholder="Price" name="price">
               <p class="help is-danger">${getError(errors, 'price')}</p>
             </div>
             
