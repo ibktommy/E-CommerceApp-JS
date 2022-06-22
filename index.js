@@ -3,9 +3,9 @@ const express = require('express')
 
 // Linking the Express App to our Routes-Auth
 const authRouter = require('./routes/admin/auth')
-// Linking the Express App to our Routes-Products
 const productsAdminRouter = require('./routes/admin/products')
 const productsIndexRouter = require('./routes/productIndex')
+const cartsRouter = require('./routes/carts')
 
 // A Global Middleware Function that runs before we make request
 const bodyParser = require('body-parser')
