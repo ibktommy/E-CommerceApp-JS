@@ -7,13 +7,9 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 // Requiring the Products Repository
 const productsRepo = require("../../databaseRepository/products");
-// Requiring New Products Template
 const newProductsTemplate = require("../../views/admin/products/newProduct");
-// Requiring Products List Template
 const listProductsTemplate = require("../../views/admin/products/index");
-// Requiring Edit-Product Template
 const editProductsTemplate = require("../../views/admin/products/editProduct");
-// Requiring the Validation Methods
 const { requireTitle, requirePrice } = require("./validator");
 
 // PRODUCT PAGE ROUTE HANDLERS
