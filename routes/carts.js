@@ -1,5 +1,7 @@
 const express = require('express')
 const cartsRepo = require('../databaseRepository/carts')
+const productsRepo = require('../databaseRepository/products')
+const cartDisplayTemplate = require('../views/carts/display')
 
 const router = express.Router()
 
@@ -30,6 +32,23 @@ router.post('/cart/products', async (req, res) => {
   await cartsRepo.update(cart.id, { items: cart.items })
 
   res.send('Product Added to Cart!')
+})
+
+// ROUTE HANDLER TO DISLAY ALL ITEMS IN CART
+router.get('/cart', async (req, res) => {
+  if (!req.session.cartId) {
+    return res.redirect('/')
+  }
+
+  const cart = await cartsRepo.getOne(req.session.cartId)
+
+  for (let item of cart.items) {
+    const product = await productsRepo.getOne(item.id)
+
+    item.product = product
+  }
+
+  res.send(cartDisplayTemplate({ items: cart.items }))
 })
 
 module.exports = router
