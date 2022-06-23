@@ -31,7 +31,7 @@ router.post('/cart/products', async (req, res) => {
   // Update Cart Items
   await cartsRepo.update(cart.id, { items: cart.items })
 
-  res.send('Product Added to Cart!')
+  res.redirect('/cart')
 })
 
 // ROUTE HANDLER TO DISLAY ALL ITEMS IN CART
